@@ -3,7 +3,13 @@
   <component name="ContentModelStore">
     <e p="$USER_HOME$/.Rider2018.1/system/resharper-host/local/Transient/ReSharperHost/v12/SolutionCaches/_SortingAlgorithms.-1353123676.00" t="ExcludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeRecursive">
+      <e p=".gitignore" t="Include" />
+      <e p="ISortingAlgorithm.cs" t="Include" />
       <e p="Program.cs" t="Include" />
+      <e p="Quicksort.cs" t="Include" />
+      <e p="RandomNumbersGenerator.cs" t="Include" />
+      <e p="SequenceLength.cs" t="Include" />
+      <e p="SequenceType.cs" t="Include" />
       <e p="SortingAlgorithms.csproj" t="IncludeRecursive" />
       <e p="SortingAlgorithms.sln" t="IncludeFlat" />
       <e p="bin" t="ExcludeRecursive" />
