@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 
 namespace SortingAlgorithms
@@ -7,33 +8,47 @@ namespace SortingAlgorithms
     {
         private const int MinGeneratedValue = int.MinValue;
         private const int MaxGeneratedValue = int.MaxValue;
+        private static readonly string SavePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "SortingAlgorithms");
+        
         private static void Main()
         {
+            var appData = new AppData(SavePath);
             var numbersGenerator = new RandomNumbersGenerator(MinGeneratedValue, MaxGeneratedValue);
             ISortingAlgorithm[] sortingAlgorithms = {
                 new Quicksort(), 
             };
-            //numbersGenerator.Generate(100000000).ToList().ForEach(Console.WriteLine);
+            GenerateAndSaveAll(numbersGenerator, appData);
         }
-        
-        public static void GenerateAll()
+
+        private static void GenerateAndSaveAll(RandomNumbersGenerator gen, AppData appData)
         {
-            foreach (object sequenceLength in Enum.GetValues(typeof(SequenceLength)))
+            var qs = new Quicksort();
+            foreach (SequenceLength sequenceLength in Enum.GetValues(typeof(SequenceLength)))
             {
-                foreach (object sequenceType in Enum.GetValues(typeof(SequenceType)))
+                foreach (SequenceType sequenceType in Enum.GetValues(typeof(SequenceType)))
                 {
-                    switch (sequenceLength)
+                    int[] arr = gen.Generate((int)sequenceLength);
+                    switch (sequenceType)
                     {
-                        case SequenceLength.HundredThousand:
+                        case SequenceType.HalfSorted:
+                            int[] firstHalf = arr.Take(arr.Length / 2).ToArray();
+                            int[] secondHalf = arr.Skip(arr.Length / 2).ToArray();
+                            qs.Sort(ref firstHalf);
+                            arr = firstHalf.Concat(secondHalf).ToArray();
                             break;
-                        case SequenceLength.FiveHundredThousand:
+                        case SequenceType.Sorted:
+                        case SequenceType.ReverseSorted:
+                            qs.Sort(ref arr);
                             break;
-                        case SequenceLength.Million:
-                            break;
-                        case SequenceLength.TwoMillion:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    if (sequenceType == SequenceType.ReverseSorted) arr = arr.Reverse().ToArray();
+                    
+                    for (int i = 0; i < 100; ++i)
+                    {
+                        appData.SaveNumbers(string.Join(' ', arr), i, sequenceLength, sequenceType);
                     }
                     
                 }

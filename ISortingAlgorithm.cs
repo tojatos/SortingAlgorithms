@@ -4,6 +4,6 @@ namespace SortingAlgorithms
 {
     public interface ISortingAlgorithm
     {
-        void Sort(List<int> numbers);
+        void Sort(ref int[] numbers);
     }
 }
