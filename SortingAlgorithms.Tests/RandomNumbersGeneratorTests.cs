@@ -23,24 +23,9 @@ namespace SortingAlgorithms.Tests
         }
         
         [Test]
-        public void SortedGenerationInRange()
-        {
-            int[] numbers = _rng.GenerateSorted(5000);
-            Assert.That(numbers, Has.All.GreaterThanOrEqualTo(Min));
-            Assert.That(numbers, Has.All.LessThan(Max));
-        }
-        
-        [Test]
         public void GenerationCount()
         {
             int[] numbers = _rng.Generate(5000);
-            Assert.That(numbers.Length, Is.EqualTo(5000));
-        }
-        
-        [Test]
-        public void SortedGenerationCount()
-        {
-            int[] numbers = _rng.GenerateSorted(5000);
             Assert.That(numbers.Length, Is.EqualTo(5000));
         }
     }

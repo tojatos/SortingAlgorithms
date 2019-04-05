@@ -24,16 +24,5 @@ namespace SortingAlgorithms
                 arr[i] = _random.Next(_minValue, _maxValue);
             return arr;
         }
-        
-        public int[] GenerateSorted(int n)
-        {
-            var arr = new SortedSet<int>();
-            int current = _minValue;
-            for (int i = 0; i < n; i++)
-            {
-                arr.Add(_random.Next(current, _maxValue));
-            }
-            return arr.ToArray();
-        }
     }
 }

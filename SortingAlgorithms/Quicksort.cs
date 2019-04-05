@@ -1,11 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-
-namespace SortingAlgorithms
+﻿namespace SortingAlgorithms
 {
     public class Quicksort : ISortingAlgorithm
     {
+        public string Name => "Quicksort";
+
         public void Sort(ref int[] numbers)
         {
             Sort(ref numbers, 0, numbers.Length - 1);
