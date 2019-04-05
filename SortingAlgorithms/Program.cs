@@ -28,13 +28,15 @@ namespace SortingAlgorithms
             };
             Console.WriteLine("Welcome to the sorting algorithm simulation engine!");
             Console.WriteLine($"Data path: {SavePath}");
-            GenerateAndSaveAll(rng, appData, logger);
+            TimeSpan generationAndWriteTime = TimeMeasurer.Measure(() => GenerateAndSaveAll(rng, appData, logger));
+            Console.WriteLine($"Data generated and saved in {generationAndWriteTime.TotalSeconds} seconds.");
             Console.ReadKey();
         }
 
         private static void GenerateAndSaveAll(RandomNumbersGenerator rng, AppData appData, Logger logger)
         {
             var qs = new Quicksort();
+            var functionTasks = new List<Task>();
             var writeTasks = new List<Task>();
             foreach (SequenceLength sequenceLength in Enum.GetValues(typeof(SequenceLength)))
             {
@@ -47,28 +49,32 @@ namespace SortingAlgorithms
                     }
                     for (int i = 0; i < 100; ++i)
                     {
-                        int[] arr = rng.Generate((int)sequenceLength);
-                        switch (sequenceType)
+                        var f = Task.Run(() =>
                         {
-                            case SequenceType.HalfSorted:
-                                int[] firstHalf = arr.Take(arr.Length / 2).ToArray();
-                                int[] secondHalf = arr.Skip(arr.Length / 2).ToArray();
-                                qs.Sort(ref firstHalf);
-                                arr = firstHalf.Concat(secondHalf).ToArray();
-                                break;
-                            case SequenceType.Sorted:
-                            case SequenceType.ReverseSorted:
-                                qs.Sort(ref arr);
-                                break;
-                        }
+                            int[] arr = rng.Generate((int) sequenceLength);
+                            switch (sequenceType)
+                            {
+                                case SequenceType.HalfSorted:
+                                    int[] firstHalf = arr.Take(arr.Length / 2).ToArray();
+                                    int[] secondHalf = arr.Skip(arr.Length / 2).ToArray();
+                                    qs.Sort(ref firstHalf);
+                                    arr = firstHalf.Concat(secondHalf).ToArray();
+                                    break;
+                                case SequenceType.Sorted:
+                                case SequenceType.ReverseSorted:
+                                    qs.Sort(ref arr);
+                                    break;
+                            }
 
-                        if (sequenceType == SequenceType.ReverseSorted) arr = arr.Reverse().ToArray();
+                            if (sequenceType == SequenceType.ReverseSorted) arr = arr.Reverse().ToArray();
                             Task t = appData.SaveNumbers(string.Join(' ', arr), i, sequenceLength, sequenceType);
                             writeTasks.Add(t);
-                        }
-
-                        Task.WaitAll(writeTasks.ToArray());
-                        logger.Log($"{sequenceLength.Description()} {sequenceType.Description()} - writing finished.");
+                        });
+                        functionTasks.Add(f);
+                    }
+                    Task.WaitAll(functionTasks.ToArray());
+                    Task.WaitAll(writeTasks.ToArray());
+                    logger.Log($"{sequenceLength.Description()} {sequenceType.Description()} - writing finished.");
                 }
             }
         }
