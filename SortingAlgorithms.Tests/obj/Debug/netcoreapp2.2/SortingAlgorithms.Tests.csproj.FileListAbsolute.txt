@@ -1,0 +1,17 @@
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/bin/Debug/netcoreapp2.2/NUnit3.TestAdapter.dll
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/bin/Debug/netcoreapp2.2/NUnit3.TestAdapter.pdb
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/bin/Debug/netcoreapp2.2/nunit.engine.netstandard.dll
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/bin/Debug/netcoreapp2.2/SortingAlgorithms.Tests.deps.json
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/bin/Debug/netcoreapp2.2/SortingAlgorithms.Tests.runtimeconfig.json
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/bin/Debug/netcoreapp2.2/SortingAlgorithms.Tests.runtimeconfig.dev.json
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/bin/Debug/netcoreapp2.2/SortingAlgorithms.Tests.dll
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/bin/Debug/netcoreapp2.2/SortingAlgorithms.Tests.pdb
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/bin/Debug/netcoreapp2.2/SortingAlgorithms.dll
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/bin/Debug/netcoreapp2.2/SortingAlgorithms.pdb
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/obj/Debug/netcoreapp2.2/SortingAlgorithms.Tests.csprojAssemblyReference.cache
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/obj/Debug/netcoreapp2.2/SortingAlgorithms.Tests.csproj.CoreCompileInputs.cache
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/obj/Debug/netcoreapp2.2/SortingAlgorithms.Tests.AssemblyInfoInputs.cache
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/obj/Debug/netcoreapp2.2/SortingAlgorithms.Tests.AssemblyInfo.cs
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/obj/Debug/netcoreapp2.2/SortingAlgorithms.Tests.csproj.CopyComplete
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/obj/Debug/netcoreapp2.2/SortingAlgorithms.Tests.dll
+/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/obj/Debug/netcoreapp2.2/SortingAlgorithms.Tests.pdb

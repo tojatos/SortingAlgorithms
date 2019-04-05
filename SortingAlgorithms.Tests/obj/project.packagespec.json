@@ -1,0 +1,59 @@
+﻿{
+  "version": "1.0.0",
+  "restore": {
+    "projectUniqueName": "/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/SortingAlgorithms.Tests.csproj",
+    "projectName": "SortingAlgorithms.Tests",
+    "projectPath": "/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/SortingAlgorithms.Tests.csproj",
+    "outputPath": "/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms.Tests/obj/",
+    "projectStyle": "PackageReference",
+    "fallbackFolders": [
+      "/opt/dotnet/sdk/NuGetFallbackFolder"
+    ],
+    "originalTargetFrameworks": [
+      "netcoreapp2.2"
+    ],
+    "frameworks": {
+      "netcoreapp2.2": {
+        "projectReferences": {
+          "/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms/SortingAlgorithms.csproj": {
+            "projectPath": "/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms/SortingAlgorithms.csproj"
+          }
+        }
+      }
+    },
+    "warningProperties": {
+      "warnAsError": [
+        "NU1605"
+      ]
+    }
+  },
+  "frameworks": {
+    "netcoreapp2.2": {
+      "dependencies": {
+        "Microsoft.NET.Test.Sdk": {
+          "target": "Package",
+          "version": "[15.9.0, )"
+        },
+        "Microsoft.NETCore.App": {
+          "suppressParent": "All",
+          "target": "Package",
+          "version": "[2.2.0, )",
+          "autoReferenced": true
+        },
+        "NUnit3TestAdapter": {
+          "target": "Package",
+          "version": "[3.11.0, )"
+        },
+        "nunit": {
+          "target": "Package",
+          "version": "[3.11.0, )"
+        }
+      },
+      "imports": [
+        "net461"
+      ],
+      "assetTargetFallback": true,
+      "warn": true
+    }
+  }
+}

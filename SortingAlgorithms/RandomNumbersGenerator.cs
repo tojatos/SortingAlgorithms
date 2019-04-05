@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+
 namespace SortingAlgorithms
 {
     public class RandomNumbersGenerator
@@ -19,6 +23,17 @@ namespace SortingAlgorithms
             for (int i = 0; i < n; i++)
                 arr[i] = _random.Next(_minValue, _maxValue);
             return arr;
+        }
+        
+        public int[] GenerateSorted(int n)
+        {
+            var arr = new SortedSet<int>();
+            int current = _minValue;
+            for (int i = 0; i < n; i++)
+            {
+                arr.Add(_random.Next(current, _maxValue));
+            }
+            return arr.ToArray();
         }
     }
 }
