@@ -28,12 +28,12 @@ namespace SortingAlgorithms
             };
             Console.WriteLine("Welcome to the sorting algorithm simulation engine!");
             Console.WriteLine($"Data path: {SavePath}");
-            TimeSpan generationAndWriteTime = TimeMeasurer.Measure(() => GenerateAndSaveAll(rng, appData, logger));
+            TimeSpan generationAndWriteTime = TimeMeasurer.Measure(() => GenerateAndSaveAll(appData, logger));
             Console.WriteLine($"Data generated and saved in {generationAndWriteTime.TotalSeconds} seconds.");
             Console.ReadKey();
         }
 
-        private static void GenerateAndSaveAll(RandomNumbersGenerator rng, AppData appData, Logger logger)
+        private static void GenerateAndSaveAll(AppData appData, Logger logger)
         {
             var qs = new Quicksort();
             var functionTasks = new List<Task>();
@@ -47,10 +47,12 @@ namespace SortingAlgorithms
                         logger.Log($"{sequenceLength.Description()} {sequenceType.Description()} - already written - skipping.");
                         continue;
                     }
-                    for (int i = 0; i < 100; ++i)
+                    //for (int i = 0; i < 100; ++i)
+                    Enumerable.Range(0, 10).ToList().ForEach(i =>
                     {
                         var f = Task.Run(() =>
                         {
+                            var rng = new RandomNumbersGenerator(MinGeneratedValue, MaxGeneratedValue);
                             int[] arr = rng.Generate((int) sequenceLength);
                             switch (sequenceType)
                             {
@@ -71,7 +73,7 @@ namespace SortingAlgorithms
                             writeTasks.Add(t);
                         });
                         functionTasks.Add(f);
-                    }
+                    });
                     Task.WaitAll(functionTasks.ToArray());
                     Task.WaitAll(writeTasks.ToArray());
                     logger.Log($"{sequenceLength.Description()} {sequenceType.Description()} - writing finished.");
