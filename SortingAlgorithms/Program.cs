@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,7 +35,6 @@ namespace SortingAlgorithms
         private static void GenerateAndSaveAll(AppData appData, Logger logger)
         {
             var qs = new Quicksort();
-            var functionTasks = new List<Task>();
             var writeTasks = new List<Task>();
             foreach (SequenceLength sequenceLength in Enum.GetValues(typeof(SequenceLength)))
             {
@@ -47,10 +45,10 @@ namespace SortingAlgorithms
                         logger.Log($"{sequenceLength.Description()} {sequenceType.Description()} - already written - skipping.");
                         continue;
                     }
-                    //for (int i = 0; i < 100; ++i)
-                    Enumerable.Range(0, 10).ToList().ForEach(i =>
-                    {
-                        var f = Task.Run(() =>
+                    
+                    //Partition generation and saving into all cores
+                    //MaxDegreeOfParallelism is needed, because we perform many IO operations
+                    Parallel.For(0, 100, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount}, async i =>
                         {
                             var rng = new RandomNumbersGenerator(MinGeneratedValue, MaxGeneratedValue);
                             int[] arr = rng.Generate((int) sequenceLength);
@@ -69,12 +67,9 @@ namespace SortingAlgorithms
                             }
 
                             if (sequenceType == SequenceType.ReverseSorted) arr = arr.Reverse().ToArray();
-                            Task t = appData.SaveNumbers(string.Join(' ', arr), i, sequenceLength, sequenceType);
-                            writeTasks.Add(t);
-                        });
-                        functionTasks.Add(f);
-                    });
-                    Task.WaitAll(functionTasks.ToArray());
+                            await appData.SaveNumbers(string.Join(' ', arr), i, sequenceLength, sequenceType);
+                        }
+                    );
                     Task.WaitAll(writeTasks.ToArray());
                     logger.Log($"{sequenceLength.Description()} {sequenceType.Description()} - writing finished.");
                 }
