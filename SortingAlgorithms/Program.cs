@@ -25,10 +25,50 @@ namespace SortingAlgorithms
                 new ShellSort(),
                 new LibrarySort(),
             };
-            Console.WriteLine("Welcome to the sorting algorithm simulation engine!");
-            Console.WriteLine($"Data path: {SavePath}");
+            while(true) {
+                Console.WriteLine("Welcome to the sorting algorithm simulation engine!");
+                Console.WriteLine($"Data path: {SavePath}");
+                Console.WriteLine("What do you want to do?");
+                Console.WriteLine("(1) - Start full simulation");
+                Console.WriteLine("(2) - Simulate one case");
+                Console.WriteLine("(3) - Exit");
+                string k = Console.ReadLine();
+                Console.WriteLine(k);
+
+                switch (k)
+                {
+                    case "1":
+                        StartFullSimulation(appData, logger);
+                        break;
+                    case "2":
+                        SimulateOneCase(appData, logger);
+                        break;
+                    case "3": 
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Invalid input!");
+                        continue;
+                }
+                Console.Clear();
+            }
+        }
+
+        private static void SimulateOneCase(AppData appData, Logger logger)
+        {
+            Console.Clear();
+            Console.WriteLine("Not avaiable yet!");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
+        private static void StartFullSimulation(AppData appData, Logger logger)
+        {
+            Console.Clear();
             TimeSpan generationAndWriteTime = TimeMeasurer.Measure(() => GenerateAndSaveAll(appData, logger));
             Console.WriteLine($"Data generated and saved in {generationAndWriteTime.TotalSeconds} seconds.");
+            Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }
 
