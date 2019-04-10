@@ -3,7 +3,7 @@
 namespace SortingAlgorithms.Tests
 {
     [TestFixture]
-    public class LibrarySortTests
+    public class MergeSortTests
     {
         [Test]
         [TestCase(new int[]{})]
@@ -14,7 +14,7 @@ namespace SortingAlgorithms.Tests
         [TestCase(new[]{15, 3242, 234, 34, 68, 34, 35})]
         public void CollectionSorted(int[] numbers)
         {
-            new LibrarySort(3).Sort(ref numbers);
+            new MergeSort().Sort(ref numbers);
             CollectionAssert.IsOrdered(numbers);
         }
     }

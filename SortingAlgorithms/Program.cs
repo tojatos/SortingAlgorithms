@@ -19,8 +19,7 @@ namespace SortingAlgorithms
             new Quicksort(),
             new ShellSort(ShellSortSeries.Shell),
             new ShellSort(ShellSortSeries.FrankLazarus),
-            new LibrarySort(3),
-            new LibrarySort(5),
+            new MergeSort(),
         };
         
         private static void Main()
