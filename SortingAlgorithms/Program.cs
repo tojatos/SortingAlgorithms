@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,10 +15,12 @@ namespace SortingAlgorithms
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "SortingAlgorithms");
         
-        private static List<ISortingAlgorithm> _sortingAlgorithms = new List<ISortingAlgorithm> {
+        private static readonly List<ISortingAlgorithm> SortingAlgorithms = new List<ISortingAlgorithm> {
             new Quicksort(),
-            new ShellSort(),
-            new LibrarySort(),
+            new ShellSort(ShellSortSeries.Shell),
+            new ShellSort(ShellSortSeries.FrankLazarus),
+            new LibrarySort(3),
+            new LibrarySort(5),
         };
         
         private static void Main()
@@ -60,6 +63,10 @@ namespace SortingAlgorithms
             SequenceLength selectedLength = SelectLength();
             SequenceType selectedType = SelectType();
             Console.WriteLine($"Selected {selectedAlgorithm.Name}, {selectedLength.Description()}, {selectedType.Description()}");
+            Console.WriteLine("Sorting...");
+            int[] arr = GenerateNumbers(selectedLength, selectedType);
+            TimeSpan x = TimeMeasurer.Measure(() => selectedAlgorithm.Sort(ref arr));
+            Console.WriteLine($"Array sorted in {x.TotalSeconds} seconds.");
             
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
@@ -119,12 +126,12 @@ namespace SortingAlgorithms
             {
                 Console.Clear();
                 Console.WriteLine("Please select sorting algorithm:");
-                for (int i = 0; i < _sortingAlgorithms.Count; i++)
-                    Console.WriteLine($"{i + 1} - {_sortingAlgorithms[i].Name}");
+                for (int i = 0; i < SortingAlgorithms.Count; i++)
+                    Console.WriteLine($"{i + 1} - {SortingAlgorithms[i].Name}");
                 bool parsed = int.TryParse(Console.ReadLine(), out int k);
                 --k;
-                if (!parsed || _sortingAlgorithms.ElementAtOrDefault(k) == null) continue;
-                return _sortingAlgorithms[k];
+                if (!parsed || SortingAlgorithms.ElementAtOrDefault(k) == null) continue;
+                return SortingAlgorithms[k];
             }
         }
 
@@ -139,7 +146,6 @@ namespace SortingAlgorithms
 
         private static void GenerateAndSaveAll(AppData appData, Logger logger)
         {
-            var qs = new Quicksort();
             var writeTasks = new List<Task>();
             foreach (SequenceLength sequenceLength in Enum.GetValues(typeof(SequenceLength)))
             {
@@ -155,23 +161,7 @@ namespace SortingAlgorithms
                     //MaxDegreeOfParallelism is needed, because we perform many IO operations
                     Parallel.For(0, 100, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount}, async i =>
                         {
-                            var rng = new RandomNumbersGenerator(MinGeneratedValue, MaxGeneratedValue);
-                            int[] arr = rng.Generate((int) sequenceLength);
-                            switch (sequenceType)
-                            {
-                                case SequenceType.HalfSorted:
-                                    int[] firstHalf = arr.Take(arr.Length / 2).ToArray();
-                                    int[] secondHalf = arr.Skip(arr.Length / 2).ToArray();
-                                    qs.Sort(ref firstHalf);
-                                    arr = firstHalf.Concat(secondHalf).ToArray();
-                                    break;
-                                case SequenceType.Sorted:
-                                case SequenceType.ReverseSorted:
-                                    qs.Sort(ref arr);
-                                    break;
-                            }
-
-                            if (sequenceType == SequenceType.ReverseSorted) arr = arr.Reverse().ToArray();
+                            int[] arr = GenerateNumbers(sequenceLength, sequenceType);
                             await appData.SaveNumbers(string.Join(' ', arr), i, sequenceLength, sequenceType);
                         }
                     );
@@ -179,6 +169,28 @@ namespace SortingAlgorithms
                     logger.Log($"{sequenceLength.Description()} {sequenceType.Description()} - writing finished.");
                 }
             }
+        }
+
+        private static int[] GenerateNumbers(SequenceLength sequenceLength, SequenceType sequenceType)
+        {
+            var rng = new RandomNumbersGenerator(MinGeneratedValue, MaxGeneratedValue);
+            int[] arr = rng.Generate((int) sequenceLength);
+            switch (sequenceType)
+            {
+                case SequenceType.HalfSorted:
+                    int[] firstHalf = arr.Take(arr.Length / 2).ToArray();
+                    int[] secondHalf = arr.Skip(arr.Length / 2).ToArray();
+                    SortingAlgorithms[0].Sort(ref firstHalf);
+                    arr = firstHalf.Concat(secondHalf).ToArray();
+                    break;
+                case SequenceType.Sorted:
+                case SequenceType.ReverseSorted:
+                    SortingAlgorithms[0].Sort(ref arr);
+                    break;
+            }
+
+            if (sequenceType == SequenceType.ReverseSorted) arr = arr.Reverse().ToArray();
+            return arr;
         }
     }
 }
