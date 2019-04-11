@@ -167,7 +167,6 @@ namespace SortingAlgorithms
 
         private static void GenerateAndSaveAll(AppData appData, Logger logger)
         {
-            var writeTasks = new List<Task>();
             foreach (SequenceLength sequenceLength in Enum.GetValues(typeof(SequenceLength)))
             {
                 foreach (SequenceType sequenceType in Enum.GetValues(typeof(SequenceType)))
@@ -186,7 +185,6 @@ namespace SortingAlgorithms
                             await appData.SaveNumbers(string.Join(' ', arr), i, sequenceLength, sequenceType);
                         }
                     );
-                    Task.WaitAll(writeTasks.ToArray());
                     logger.Log($"{sequenceLength.Description()} {sequenceType.Description()} - writing finished.");
                 }
             }

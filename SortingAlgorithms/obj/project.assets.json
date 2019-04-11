@@ -688,8 +688,7 @@
     ]
   },
   "packageFolders": {
-    "/home/tojatos/.nuget/packages/": {},
-    "/opt/dotnet/sdk/NuGetFallbackFolder": {}
+    "/home/tojatos/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
@@ -700,11 +699,8 @@
       "packagesPath": "/home/tojatos/.nuget/packages/",
       "outputPath": "/home/tojatos/Scripts/SortingAlgorithms/SortingAlgorithms/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "/opt/dotnet/sdk/NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "/home/tojatos/.config/NuGet/NuGet.Config"
+        "/home/tojatos/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
