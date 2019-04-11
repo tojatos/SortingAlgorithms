@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -28,20 +29,23 @@ namespace SortingAlgorithms
             string path = Path.Combine(_savePath, GetDirectoryName(sl, st), index.ToString()) + ".txt";
             await Save(data, path);
         }
-        
-        public async Task SaveResult(string data, SequenceLength sl, SequenceType st)
+
+        public int[] GetNumbers(int index, SequenceLength sl, SequenceType st)
         {
-            string path = Path.Combine(_savePath, "Results", GetFileName(sl, st)) + ".txt";
+            string path = Path.Combine(_savePath, GetDirectoryName(sl, st), index.ToString()) + ".txt";
+            return File.ReadAllText(path).Split(' ').Select(int.Parse).ToArray();
+        }
+        public async Task SaveResult(string data, ISortingAlgorithm algorithm,  SequenceLength sl, SequenceType st)
+        {
+            string path = Path.Combine(_savePath, "Results", GetFileName(algorithm, sl, st)) + ".txt";
             await Save(data, path);
         }
 
-        private async Task Save(string data, string path)
+        private static async Task Save(string data, string path)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(path));
 
             await File.WriteAllTextAsync(path, data);
-            //.ContinueWith(a=>_logger.Log("Written to file " + path), TaskContinuationOptions.OnlyOnRanToCompletion);
-
         }
 
         private static string GetDirectoryName(SequenceLength sl, SequenceType st)
@@ -49,5 +53,8 @@ namespace SortingAlgorithms
 
         private static string GetFileName(SequenceLength sl, SequenceType st)
             => sl.Description() + "_" + st.Description();
+        
+        private static string GetFileName(ISortingAlgorithm algorithm, SequenceLength sl, SequenceType st)
+            => algorithm.Name + "_" + GetFileName(sl, st);
     }
 }

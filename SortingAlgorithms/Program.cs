@@ -42,7 +42,7 @@ namespace SortingAlgorithms
                         StartFullSimulation(appData, logger);
                         break;
                     case "2":
-                        SimulateOneCase(appData, logger);
+                        SimulateOneCase();
                         break;
                     case "3": 
                         Environment.Exit(0);
@@ -56,7 +56,7 @@ namespace SortingAlgorithms
             }
         }
 
-        private static void SimulateOneCase(AppData appData, Logger logger)
+        private static void SimulateOneCase()
         {
             ISortingAlgorithm selectedAlgorithm = SelectAlgorithm();
             SequenceLength selectedLength = SelectLength();
@@ -139,6 +139,28 @@ namespace SortingAlgorithms
             Console.Clear();
             TimeSpan generationAndWriteTime = TimeMeasurer.Measure(() => GenerateAndSaveAll(appData, logger));
             Console.WriteLine($"Data generated and saved in {generationAndWriteTime.TotalSeconds} seconds.");
+
+
+            foreach (ISortingAlgorithm algorithm in SortingAlgorithms)
+            {
+                foreach (SequenceLength sequenceLength in Enum.GetValues(typeof(SequenceLength)))
+                {
+                    foreach (SequenceType sequenceType in Enum.GetValues(typeof(SequenceType)))
+                    {
+                        Console.WriteLine($"Simulating {algorithm.Name} - {sequenceLength} - {sequenceType}");
+                        var times = new double[100];
+                        for (int i = 0; i < 100; ++i)
+                        {
+                            int[] numbers = appData.GetNumbers(i, sequenceLength, sequenceType);
+                            double timeInSeconds = TimeMeasurer.Measure(() => algorithm.Sort(ref numbers)).TotalSeconds;
+                            times[i] = timeInSeconds;
+                        }
+
+                        appData.SaveResult(string.Join(' ', times), algorithm, sequenceLength, sequenceType).Wait();
+                    }
+                }
+            }
+
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }
